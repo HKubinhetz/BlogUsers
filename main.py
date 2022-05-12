@@ -43,6 +43,7 @@ class BlogPost(db.Model):
 # ---------------------------------- ROUTING ----------------------------------
 @app.route('/')
 def get_all_posts():
+    # Default routing, for when the user first accesses the Blog.
     posts = BlogPost.query.all()
     return render_template("index.html", all_posts=posts)
 
