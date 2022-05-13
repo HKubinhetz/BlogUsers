@@ -72,6 +72,7 @@ def show_post(post_id):
 
 @app.route("/about")
 def about():
+    # About routing, a simple description about the blog.
     return render_template("about.html")
 
 
