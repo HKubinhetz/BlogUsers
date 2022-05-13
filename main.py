@@ -60,6 +60,7 @@ def login():
 
 @app.route('/logout')
 def logout():
+    # Logout routing, for when the user decides to disconnect its account from the blog.
     return redirect(url_for('get_all_posts'))
 
 
