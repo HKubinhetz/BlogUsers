@@ -55,6 +55,7 @@ def register():
 
 @app.route('/login')
 def login():
+    # Logout routing, for when the user decides to connect to its blog account.
     return render_template("login.html")
 
 
