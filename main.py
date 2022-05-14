@@ -26,6 +26,7 @@ db = SQLAlchemy(app)                                                    # App cr
 
 # ----------------------------------- TABLES ----------------------------------
 class BlogPost(db.Model):
+    # BlogPost class, represents the post structure and it`s form of storage in the DB.
     __tablename__ = "blog_posts"
     id = db.Column(db.Integer, primary_key=True)
     author = db.Column(db.String(250), nullable=False)
