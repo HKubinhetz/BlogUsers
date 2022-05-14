@@ -12,10 +12,10 @@ from flask_gravatar import Gravatar
 
 
 # -------------------------------- APP CONFIG ---------------------------------
-app = Flask(__name__)
-app.config['SECRET_KEY'] = '8BYkEfBA6O6donzWlSihBXox7C0sKR6b'
-ckeditor = CKEditor(app)
-Bootstrap(app)
+app = Flask(__name__)                                                   # Flask App
+app.config['SECRET_KEY'] = '8BYkEfBA6O6donzWlSihBXox7C0sKR6b'           # Secret Key example
+ckeditor = CKEditor(app)                                                # CKE Editor
+Bootstrap(app)                                                          # Implementing Bootstrap
 
 
 # ---------------------------------- DATABASE ---------------------------------
@@ -50,6 +50,18 @@ def get_all_posts():
 
 @app.route('/register')
 def register():
+
+    # TODO - Use what you've learnt yesterday to allow users to go to the /register route
+    #  to sign up to your blog website. You should create a WTForm in forms.py called
+    #  RegisterForm and use Flask-Bootstrap to render a wtf quick_form.
+    #
+    # TODO - The data the user entered should be used to create a new entry in your blog.db in a User table.
+    #
+    # TODO - HINT 1: You don't need to change anything in register.html
+    #
+    # TODO - HINT 2: Don't worry about Flask-Login yet, you are just creating a
+    #  new user in the database. We'll log them in in the next step.
+
     return render_template("register.html")
 
 
