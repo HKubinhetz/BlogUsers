@@ -19,9 +19,9 @@ Bootstrap(app)                                                          # Implem
 
 
 # ---------------------------------- DATABASE ---------------------------------
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///blog.db'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-db = SQLAlchemy(app)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///blog.db'             # SQL Database Path
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False                    # Disabling outdated configs
+db = SQLAlchemy(app)                                                    # App creation
 
 
 # ----------------------------------- TABLES ----------------------------------
