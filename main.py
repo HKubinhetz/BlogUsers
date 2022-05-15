@@ -53,6 +53,12 @@ class User(db.Model):
 # ---------------------------------- ROUTING ----------------------------------
 @app.route('/')
 def get_all_posts():
+
+    # TODO - Figure out how to update the navbar so that when a user is not logged in it shows:
+    #  HOME LOGIN REGISTER ABOUT CONTACT
+    #  But if the user is logged in / authenticated after registering, then the navbar should show:
+    #  HOME LOGOUT ABOUT CONTACT
+
     # Default routing, for when the user first accesses the Blog.
     posts = BlogPost.query.all()
     return render_template("index.html", all_posts=posts)
@@ -75,6 +81,16 @@ def register():
 
         db.session.add(new_user)        # Adding the new user to the DB
         db.session.commit()             # Commiting the change
+
+        # TODO -  2. Add 1 line of code in the /register route so that when users successfully
+        #  register they are taken back to the home page and are logged in with Flask-Login.
+
+        # TODO - In the in the /register route, if a user is trying to register with an email
+        #  that already exists in the database then they should be redirected to the /login
+        #  route and a flash message used to tell them to log in with that email instead.
+
+
+
         return redirect(url_for('get_all_posts'))
 
     return render_template("register.html", form=form)
@@ -83,12 +99,25 @@ def register():
 @app.route('/login')
 def login():
     # Logout routing, for when the user decides to connect to its blog account.
+
+    # TODO - 1. Users who have been successfully registered (added to the user table in the database)
+    #  should be able to go to the /login route to use their credentials to log in. You will need to
+    #  review the Flask-Login docs and the lessons from yesterday to be able to do this.
+
+    # TODO - In the /login route, if a user's email does not exist in the database or if their password
+    #  does not match the one stored using check_password() then they should be redirected back to /login
+    #  and a flash message should let them know what they issue was and ask them to try again.
+
     return render_template("login.html")
 
 
 @app.route('/logout')
 def logout():
     # Logout routing, for when the user decides to disconnect its account from the blog.
+
+    # TODO -  Code up the /logout route so that when the user clicks on the LOG OUT button,
+    #  it logs them out and takes them back to the home page.
+
     return redirect(url_for('get_all_posts'))
 
 
