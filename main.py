@@ -65,12 +65,19 @@ def register():
 
     if form.validate_on_submit():
         # If form is submitting (POST method), creates a new User object and appends it to the DB.
+
+        new_user = User(
+            email=form.email.data,
+            password=form.password.data,
+            name=form.name.data
+        )
+        print(new_user.email)
         # Fetches name, e-mail and password.
         # Print as a test
         # Append to the DB
         # Commit
         # Render template
-        return render_template(url_for(get_all_posts))
+        return render_template(url_for('get_all_posts'))
 
     return render_template("register.html", form=form)
 
