@@ -58,16 +58,19 @@ def get_all_posts():
     return render_template("index.html", all_posts=posts)
 
 
-@app.route('/register')
+@app.route('/register', methods=["GET", "POST"])
 def register():
 
     form = UserForm()
 
-    # TODO - Use what you've learnt yesterday to allow users to go to the /register route
-    #  to sign up to your blog website. You should create a WTForm in forms.py called
-    #  RegisterForm and use Flask-Bootstrap to render a wtf quick_form.
-    #
-    # TODO - The data the user entered should be used to create a new entry in your blog.db in a User table.
+    if form.validate_on_submit():
+        # If form is submitting (POST method), creates a new User object and appends it to the DB.
+        # Fetches name, e-mail and password.
+        # Print as a test
+        # Append to the DB
+        # Commit
+        # Render template
+        return render_template(url_for(get_all_posts))
 
     return render_template("register.html", form=form)
 
