@@ -37,6 +37,17 @@ class BlogPost(db.Model):
     img_url = db.Column(db.String(250), nullable=False)
 
 
+class User(db.Model):
+    # User class, represents the users registred to the blog and it's form of storage in the DB.
+    __tablename__ = "usernames"
+    id = db.Column(db.Integer, primary_key=True)
+    email = db.Column(db.String(250), unique=True, nullable=False)
+    password = db.Column(db.String(250), nullable=False)
+    name = db.Column(db.String(250), nullable=False)
+
+
+
+
 # Table Creation, run only once
 # db.create_all()
 

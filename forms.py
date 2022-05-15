@@ -13,7 +13,7 @@ class CreatePostForm(FlaskForm):
     submit = SubmitField("Submit Post")
 
 
-class User(FlaskForm):
+class UserForm(FlaskForm):
     email = StringField("Your email", validators=[DataRequired()])
     password = PasswordField("Password", validators=[DataRequired()])
     name = StringField("Your name", validators=[DataRequired()])
