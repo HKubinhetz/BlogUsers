@@ -68,16 +68,13 @@ def register():
 
         new_user = User(
             email=form.email.data,
-            password=form.password.data,
+            password=generate_password_hash(form.password.data, salt_length=8),
             name=form.name.data
         )
-        print(new_user.email)
-        # Fetches name, e-mail and password.
-        # Print as a test
-        # Append to the DB
-        # Commit
-        # Render template
-        return render_template(url_for('get_all_posts'))
+
+        db.session.add(new_user)
+        db.session.commit()
+        return redirect(url_for('get_all_posts'))
 
     return render_template("register.html", form=form)
 
