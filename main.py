@@ -89,8 +89,6 @@ def register():
         #  that already exists in the database then they should be redirected to the /login
         #  route and a flash message used to tell them to log in with that email instead.
 
-
-
         return redirect(url_for('get_all_posts'))
 
     return render_template("register.html", form=form)
@@ -100,6 +98,7 @@ def register():
 def login():
     # Logout routing, for when the user decides to connect to its blog account.
 
+    form = LoginForm()
     # TODO - 1. Users who have been successfully registered (added to the user table in the database)
     #  should be able to go to the /login route to use their credentials to log in. You will need to
     #  review the Flask-Login docs and the lessons from yesterday to be able to do this.
@@ -108,7 +107,7 @@ def login():
     #  does not match the one stored using check_password() then they should be redirected back to /login
     #  and a flash message should let them know what they issue was and ask them to try again.
 
-    return render_template("login.html")
+    return render_template("login.html", form=form)
 
 
 @app.route('/logout')

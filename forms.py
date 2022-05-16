@@ -23,5 +23,5 @@ class UserForm(FlaskForm):
 class LoginForm(FlaskForm):
     email = StringField("Your email", validators=[DataRequired()])
     password = PasswordField("Password", validators=[DataRequired()])
-    submit = SubmitField("Create User")
+    submit = SubmitField("Enter")
 
