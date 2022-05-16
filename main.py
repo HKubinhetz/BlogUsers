@@ -16,6 +16,8 @@ app = Flask(__name__)                                                   # Flask 
 app.config['SECRET_KEY'] = '8BYkEfBA6O6donzWlSihBXox7C0sKR6b'           # Secret Key example
 ckeditor = CKEditor(app)                                                # CKE Editor
 Bootstrap(app)                                                          # Implementing Bootstrap
+login_manager = LoginManager()                                          # Creating Login Object
+login_manager.init_app(app)                                             # Initializing Login Object
 
 
 # ---------------------------------- DATABASE ---------------------------------
@@ -48,6 +50,11 @@ class User(db.Model):
 
 # Table Creation, run only once
 # db.create_all()
+
+# --------------------------------- FUNCTIONS ---------------------------------
+@login_manager.user_loader
+def load_user(user_id):
+    return User.get(user_id)
 
 
 # ---------------------------------- ROUTING ----------------------------------
@@ -102,6 +109,7 @@ def login():
     # TODO - 1. Users who have been successfully registered (added to the user table in the database)
     #  should be able to go to the /login route to use their credentials to log in. You will need to
     #  review the Flask-Login docs and the lessons from yesterday to be able to do this.
+
 
     # TODO - In the /login route, if a user's email does not exist in the database or if their password
     #  does not match the one stored using check_password() then they should be redirected back to /login
