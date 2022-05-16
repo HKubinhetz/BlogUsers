@@ -39,7 +39,7 @@ class BlogPost(db.Model):
     img_url = db.Column(db.String(250), nullable=False)
 
 
-class User(db.Model):
+class User(db.Model, UserMixin):
     # User class, represents the users registred to the blog and it's form of storage in the DB.
     __tablename__ = "usernames"
     id = db.Column(db.Integer, primary_key=True)
@@ -80,11 +80,10 @@ def register():
         # If form is submitting (POST method), creates a new User object and appends it to the DB.
 
         # User Creation
-        new_user = User(
-            email=form.email.data,
-            password=generate_password_hash(form.password.data, salt_length=8),
-            name=form.name.data
-        )
+        new_user = User()
+        new_user.email = form.email.data,
+        new_user.password = generate_password_hash(form.password.data, salt_length=8),
+        new_user.name = form.name.data
 
         db.session.add(new_user)        # Adding the new user to the DB
         db.session.commit()             # Commiting the change
