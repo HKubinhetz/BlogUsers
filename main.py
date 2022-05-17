@@ -8,6 +8,7 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import relationship
 from flask_login import UserMixin, login_user, LoginManager, login_required, current_user, logout_user
 from forms import CreatePostForm, UserForm, LoginForm
+from sqlalchemy.exc import IntegrityError
 from flask_gravatar import Gravatar
 
 
@@ -85,15 +86,16 @@ def register():
         new_user.password = generate_password_hash(form.password.data, salt_length=8)
         new_user.name = form.name.data
 
-        db.session.add(new_user)        # Adding the new user to the DB
-        db.session.commit()             # Commiting the change
+        try:
+            db.session.add(new_user)        # Adding the new user to the DB
+            db.session.commit()             # Commiting the change
 
-        login_user(new_user)
-        return redirect(url_for("get_all_posts"))
+            login_user(new_user)
+            return redirect(url_for("get_all_posts"))
 
-        # TODO - In the in the /register route, if a user is trying to register with an email
-        #  that already exists in the database then they should be redirected to the /login
-        #  route and a flash message used to tell them to log in with that email instead.
+        except IntegrityError:
+            flash("Username already exists! Please login instead!")
+            return redirect(url_for("login"))
 
     return render_template("register.html", form=form)
 
