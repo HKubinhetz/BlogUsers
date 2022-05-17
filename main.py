@@ -81,8 +81,8 @@ def register():
 
         # User Creation
         new_user = User()
-        new_user.email = form.email.data,
-        new_user.password = generate_password_hash(form.password.data, salt_length=8),
+        new_user.email = form.email.data
+        new_user.password = generate_password_hash(form.password.data, salt_length=8)
         new_user.name = form.name.data
 
         db.session.add(new_user)        # Adding the new user to the DB
@@ -100,7 +100,7 @@ def register():
     return render_template("register.html", form=form)
 
 
-@app.route('/login')
+@app.route('/login', methods=["GET", "POST"])
 def login():
     # Logout routing, for when the user decides to connect to its blog account.
 
@@ -109,6 +109,26 @@ def login():
     #  should be able to go to the /login route to use their credentials to log in. You will need to
     #  review the Flask-Login docs and the lessons from yesterday to be able to do this.
 
+    if form.validate_on_submit():
+        login_mail = form.email.data
+
+        selected_user = db.session.query(User).filter_by(email=login_mail).first()
+        print(selected_user)
+        if selected_user is None:
+            # If the email does not exist:
+            print("Username not found!")
+            message = flash("Username not found")
+            return render_template("login.html", form=form, message=message)
+        else:
+            print("Login! But let's check that password first")
+            password_check = check_password_hash(selected_user.password, form.password.data)
+            print(f"Password Status: {password_check}")
+            if password_check:
+                print("Login Success!")
+            else:
+                print("Bad password!")
+                message = flash("Wrong password!")
+                return render_template("login.html", form=form, message=message)
 
     # TODO - In the /login route, if a user's email does not exist in the database or if their password
     #  does not match the one stored using check_password() then they should be redirected back to /login
