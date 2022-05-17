@@ -116,19 +116,19 @@ def login():
         print(selected_user)
         if selected_user is None:
             # If the email does not exist:
-            print("Username not found!")
-            message = flash("Username not found")
-            return render_template("login.html", form=form, message=message)
+            flash("Username not found", "error")
+            return render_template("login.html", form=form)
         else:
             print("Login! But let's check that password first")
             password_check = check_password_hash(selected_user.password, form.password.data)
             print(f"Password Status: {password_check}")
             if password_check:
                 print("Login Success!")
+                login_user(selected_user)
+                return redirect(url_for("get_all_posts"))
             else:
-                print("Bad password!")
-                message = flash("Wrong password!")
-                return render_template("login.html", form=form, message=message)
+                flash("Bad password!", "error")
+                return render_template("login.html", form=form)
 
     # TODO - In the /login route, if a user's email does not exist in the database or if their password
     #  does not match the one stored using check_password() then they should be redirected back to /login
