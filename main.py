@@ -131,12 +131,10 @@ def login():
 
 
 @app.route('/logout')
+@login_required
 def logout():
     # Logout routing, for when the user decides to disconnect its account from the blog.
-
-    # TODO -  Code up the /logout route so that when the user clicks on the LOG OUT button,
-    #  it logs them out and takes them back to the home page.
-
+    logout_user()
     return redirect(url_for('get_all_posts'))
 
 
