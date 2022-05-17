@@ -62,11 +62,6 @@ def load_user(user_id):
 @app.route('/')
 def get_all_posts():
 
-    # TODO - Figure out how to update the navbar so that when a user is not logged in it shows:
-    #  HOME LOGIN REGISTER ABOUT CONTACT
-    #  But if the user is logged in / authenticated after registering, then the navbar should show:
-    #  HOME LOGOUT ABOUT CONTACT
-
     # Default routing, for when the user first accesses the Blog.
     posts = BlogPost.query.all()
     return render_template("index.html", all_posts=posts)
