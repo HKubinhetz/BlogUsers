@@ -35,7 +35,7 @@ db = SQLAlchemy(app)                                                    # App cr
 #  You should be able to easily locate the BlogPosts a User has written and also
 #  the User of any BlogPost object.
 
-# TODO - https://segredosdomundo.r7.com/batatas/
+# TODO - https://segredosdomundo.r7.com/batatas/ - Blog post example
 # TODO - Como ser uma Batata – Crônicas de um tubérculo
 # TODO - https://www.udemy.com/course/100-days-of-code/learn/lecture/22867537#questions
 
