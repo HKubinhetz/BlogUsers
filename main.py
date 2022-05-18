@@ -3,7 +3,6 @@ from flask import Flask, render_template, redirect, url_for, flash, abort
 from flask_bootstrap import Bootstrap
 from flask_ckeditor import CKEditor
 from datetime import date
-from sqlalchemy import ForeignKey
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import relationship
@@ -49,7 +48,7 @@ class BlogPost(db.Model):
     date = db.Column(db.String(250), nullable=False)
     body = db.Column(db.Text, nullable=False)
     img_url = db.Column(db.String(250), nullable=False)
-    parent_id = db.Column(db.Integer, ForeignKey('usernames.id'))
+    parent_id = db.Column(db.Integer, db.ForeignKey('usernames.id'))
 
 
 class User(db.Model, UserMixin):
@@ -184,8 +183,9 @@ def add_new_post():
             subtitle=form.subtitle.data,
             body=form.body.data,
             img_url=form.img_url.data,
-            author=current_user.id,
-            date=date.today().strftime("%B %d, %Y")
+            author=current_user.name,
+            date=date.today().strftime("%B %d, %Y"),
+            parent_id=current_user.id
         )
         db.session.add(new_post)
         db.session.commit()
