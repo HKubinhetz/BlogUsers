@@ -29,15 +29,6 @@ db = SQLAlchemy(app)                                                    # App cr
 
 
 # ----------------------------------- TABLES ----------------------------------
-# TODO - CHALLENGE 1: See if you can modify the User (Parent) and BlogPost (Child) class
-#  code to create a bidirectional One-to-Many relationship between the two tables.
-#  You should be able to easily locate the BlogPosts a User has written and also
-#  the User of any BlogPost object.
-
-# TODO - https://segredosdomundo.r7.com/batatas/ - Blog post example
-# TODO - Como ser uma Batata – Crônicas de um tubérculo
-# TODO - https://www.udemy.com/course/100-days-of-code/learn/lecture/22867537#questions
-
 class BlogPost(db.Model):
     # BlogPost class, represents the post structure and it`s form of storage in the DB.
     __tablename__ = "blog_posts"
