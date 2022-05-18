@@ -1,14 +1,16 @@
 # ---------------------------------- IMPORTS ----------------------------------
-from flask import Flask, render_template, redirect, url_for, flash
+from flask import Flask, render_template, redirect, url_for, flash, abort
 from flask_bootstrap import Bootstrap
 from flask_ckeditor import CKEditor
 from datetime import date
+from sqlalchemy import ForeignKey
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import relationship
 from flask_login import UserMixin, login_user, LoginManager, login_required, current_user, logout_user
 from forms import CreatePostForm, UserForm, LoginForm
 from sqlalchemy.exc import IntegrityError
+from functools import wraps
 from flask_gravatar import Gravatar
 
 
@@ -28,6 +30,15 @@ db = SQLAlchemy(app)                                                    # App cr
 
 
 # ----------------------------------- TABLES ----------------------------------
+# TODO - CHALLENGE 1: See if you can modify the User (Parent) and BlogPost (Child) class
+#  code to create a bidirectional One-to-Many relationship between the two tables.
+#  You should be able to easily locate the BlogPosts a User has written and also
+#  the User of any BlogPost object.
+
+# TODO - https://segredosdomundo.r7.com/batatas/
+# TODO - Como ser uma Batata – Crônicas de um tubérculo
+# TODO - https://www.udemy.com/course/100-days-of-code/learn/lecture/22867537#questions
+
 class BlogPost(db.Model):
     # BlogPost class, represents the post structure and it`s form of storage in the DB.
     __tablename__ = "blog_posts"
@@ -38,6 +49,7 @@ class BlogPost(db.Model):
     date = db.Column(db.String(250), nullable=False)
     body = db.Column(db.Text, nullable=False)
     img_url = db.Column(db.String(250), nullable=False)
+    parent_id = db.Column(db.Integer, ForeignKey('usernames.id'))
 
 
 class User(db.Model, UserMixin):
@@ -47,15 +59,27 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(250), unique=True, nullable=False)
     password = db.Column(db.String(250), nullable=False)
     name = db.Column(db.String(250), nullable=False)
+    children = relationship(BlogPost)
 
 
 # Table Creation, run only once
 # db.create_all()
 
+
 # --------------------------------- FUNCTIONS ---------------------------------
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(user_id)
+
+
+def admin_only(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if current_user.get_id() != str(1):
+            abort(403)
+        else:
+            return f(*args, **kwargs)
+    return decorated_function
 
 
 # ---------------------------------- ROUTING ----------------------------------
@@ -150,7 +174,8 @@ def contact():
     return render_template("contact.html")
 
 
-@app.route("/new-post")
+@app.route("/new-post", methods=["GET", "POST"])
+@admin_only
 def add_new_post():
     form = CreatePostForm()
     if form.validate_on_submit():
@@ -169,6 +194,7 @@ def add_new_post():
 
 
 @app.route("/edit-post/<int:post_id>")
+@admin_only
 def edit_post(post_id):
     post = BlogPost.query.get(post_id)
     edit_form = CreatePostForm(
@@ -191,6 +217,7 @@ def edit_post(post_id):
 
 
 @app.route("/delete/<int:post_id>")
+@admin_only
 def delete_post(post_id):
     post_to_delete = BlogPost.query.get(post_id)
     db.session.delete(post_to_delete)
