@@ -28,5 +28,5 @@ class LoginForm(FlaskForm):
 
 # TODO - Create a Comment Form
 class CommentForm(FlaskForm):
-    comment = CKEditorField("Your email", validators=[DataRequired()])
+    comment = CKEditorField("Your email", validators=[DataRequired()]) # TODO - Check if this is the right syntax
     submit = SubmitField("Post Comment")
