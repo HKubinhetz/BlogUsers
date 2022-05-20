@@ -29,6 +29,15 @@ db = SQLAlchemy(app)                                                    # App cr
 
 
 # ----------------------------------- TABLES ----------------------------------
+class Comment(db.Model):
+    # Comment class, represents the comment structure and it`s form of storage in the DB.
+    __tablename__ = "comments"
+    id = db.Column(db.Integer, primary_key=True)
+    text = db.Column(db.Text, nullable=False)
+    author_id = db.Column(db.Integer, db.ForeignKey('usernames.id'))
+    post_id = db.Column(db.Integer, db.ForeignKey('blog_posts.id'))
+
+
 class BlogPost(db.Model):
     # BlogPost class, represents the post structure and it`s form of storage in the DB.
     __tablename__ = "blog_posts"
@@ -40,6 +49,7 @@ class BlogPost(db.Model):
     body = db.Column(db.Text, nullable=False)
     img_url = db.Column(db.String(250), nullable=False)
     parent_id = db.Column(db.Integer, db.ForeignKey('usernames.id'))
+    children = relationship(Comment)
 
 
 class User(db.Model, UserMixin):
@@ -49,7 +59,7 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(250), unique=True, nullable=False)
     password = db.Column(db.String(250), nullable=False)
     name = db.Column(db.String(250), nullable=False)
-    children = relationship(BlogPost)
+    children = relationship(BlogPost, Comment)
 
 
 # Table Creation, run only once
