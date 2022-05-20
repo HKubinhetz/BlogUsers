@@ -49,7 +49,7 @@ class BlogPost(db.Model):
     body = db.Column(db.Text, nullable=False)
     img_url = db.Column(db.String(250), nullable=False)
     parent_id = db.Column(db.Integer, db.ForeignKey('usernames.id'))
-    children = relationship(Comment)
+    children_comments = relationship(Comment)
 
 
 class User(db.Model, UserMixin):
@@ -59,7 +59,8 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(250), unique=True, nullable=False)
     password = db.Column(db.String(250), nullable=False)
     name = db.Column(db.String(250), nullable=False)
-    children = relationship(BlogPost, Comment)
+    children_posts = relationship(BlogPost)
+    children_comments = relationship(Comment)
 
 
 # Table Creation, run only once
