@@ -181,7 +181,9 @@ def show_post(post_id):
             # TODO - Salvar no DB, Redirecionar ao Post de novo
         else:
             print("Precisa Logar")
-            # TODO - Flash "Please Login or Register to Comment", redirect to login page!
+            flash("Please Login or Register to Comment")
+            redirect(url_for("login"))
+
 
     # TODO -  Log in as your John Doe user (or any user that is not the primary user) and make
     #  a comment on a blog post. In order for this to work, you will need to update the
