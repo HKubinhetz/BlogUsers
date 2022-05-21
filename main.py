@@ -181,14 +181,8 @@ def show_post(post_id):
             # TODO - Salvar no DB, Redirecionar ao Post de novo
         else:
             print("Precisa Logar")
-            flash("Please Login or Register to Comment")
-            redirect(url_for("login"))
-
-
-    # TODO -  Log in as your John Doe user (or any user that is not the primary user) and make
-    #  a comment on a blog post. In order for this to work, you will need to update the
-    #  /post/<int:post_id> route. Make sure that only authenticated (logged-in) users can save their comment.
-    #  Otherwise, they should see a flash message telling them to log in and redirect them to the /login route.
+            flash("Please Login or Register to Comment!")
+            return redirect(url_for("login"))
 
     return render_template("post.html", post=requested_post, form=form)
 
