@@ -158,11 +158,36 @@ def logout():
     return redirect(url_for('get_all_posts'))
 
 
-@app.route("/post/<int:post_id>")
+@app.route("/post/<int:post_id>", methods=["GET", "POST"])
 def show_post(post_id):
     requested_post = BlogPost.query.get(post_id)
+
+    # TODO - Update the code in post.html to display all the comments associated with the blog post.
+    #  HINT 1: Don't worry about the commenter image just yet.
+    #  HINT 2: comments is a property of each blog post, you can treat it like a List.
+    #  HINT 3: The text of each comment is created from the CKEditor just like the body
+    #  of each blog post so it will be saved in HTML format.
+
+    # TODO - Implement https://pythonhosted.org/Flask-Gravatar/
+
     form = CommentForm()
-    # TODO - Build the form into the post page.
+
+    if form.validate_on_submit():
+        comment = form.comment.data
+        print(comment)
+
+        if current_user.is_authenticated:
+            print("Top!")
+            # TODO - Salvar no DB, Redirecionar ao Post de novo
+        else:
+            print("Precisa Logar")
+            # TODO - Flash "Please Login or Register to Comment", redirect to login page!
+
+    # TODO -  Log in as your John Doe user (or any user that is not the primary user) and make
+    #  a comment on a blog post. In order for this to work, you will need to update the
+    #  /post/<int:post_id> route. Make sure that only authenticated (logged-in) users can save their comment.
+    #  Otherwise, they should see a flash message telling them to log in and redirect them to the /login route.
+
     return render_template("post.html", post=requested_post, form=form)
 
 
