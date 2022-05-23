@@ -28,6 +28,17 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False                    # Disabl
 db = SQLAlchemy(app)                                                    # App creation
 
 
+# ---------------------------------- GRAVATAR ---------------------------------
+gravatar = Gravatar(app,
+                    size=100,
+                    rating='g',
+                    default='retro',
+                    force_default=False,
+                    force_lower=False,
+                    use_ssl=False,
+                    base_url=None)
+
+
 # ----------------------------------- TABLES ----------------------------------
 class User(UserMixin, db.Model):
     __tablename__ = "users"
@@ -163,14 +174,6 @@ def show_post(post_id):
     post_comments = db.session.query(Comment).filter_by(post_id=post_id).all()
     print(post_comments)
 
-    # TODO - Update the code in post.html to display all the comments associated with the blog post.
-    #  HINT 1: Don't worry about the commenter image just yet.
-    #  HINT 2: comments is a property of each blog post, you can treat it like a List.
-    #  HINT 3: The text of each comment is created from the CKEditor just like the body
-    #  of each blog post so it will be saved in HTML format.
-
-    # TODO - Implement https://pythonhosted.org/Flask-Gravatar/
-
     form = CommentForm()
 
     if form.validate_on_submit():
@@ -186,6 +189,8 @@ def show_post(post_id):
             )
             db.session.add(new_comment)
             db.session.commit()
+            post_comments = db.session.query(Comment).filter_by(post_id=post_id).all()
+            return render_template("post.html", post=requested_post, form=form, comments=post_comments)
         else:
             print("Precisa Logar")
             flash("Please Login or Register to Comment!")

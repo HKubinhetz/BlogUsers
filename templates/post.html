@@ -42,11 +42,11 @@
               <ul class="commentList">
                 <li>
                     <div class="commenterImage">
-                      <img src="https://wallpaperaccess.com/full/2066123.jpg"/>
+                      <img src="{{ comment.comment_author.email | gravatar }}"/>
                     </div>
                     <div class="commentText">
                       <p>{{ comment.text|safe }}</p>
-                      <span class="date sub-text">comment author name</span>
+                      <span class="date sub-text">{{comment.comment_author.name}}</span>
                     </div>
                 </li>
               </ul>
