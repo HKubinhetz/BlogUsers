@@ -177,7 +177,12 @@ def show_post(post_id):
         print(comment)
 
         if current_user.is_authenticated:
-            print("Top!")
+            print("Top! Vamos salvar esse post!")
+            new_comment = Comment(
+                text=comment,
+                author_id=current_user.id,
+                post_id=post_id
+            )
             # TODO - Salvar no DB, Redirecionar ao Post de novo
         else:
             print("Precisa Logar")
