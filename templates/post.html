@@ -38,18 +38,21 @@
 
 <!--           Comments Area -->
           <div class="col-lg-8 col-md-10 mx-auto comment">
+            {% for comment in comments %}
               <ul class="commentList">
                 <li>
                     <div class="commenterImage">
-                      <img src="https://pbs.twimg.com/profile_images/744849215675838464/IH0FNIXk.jpg"/>
+                      <img src="https://wallpaperaccess.com/full/2066123.jpg"/>
                     </div>
                     <div class="commentText">
-                      <p>Some comment</p>
+                      <p>{{ comment.text }}</p>
                       <span class="date sub-text">comment author name</span>
                     </div>
                 </li>
               </ul>
             </div>
+            {% endfor %}
+
               {{ wtf.quick_form(form, novalidate=True, button_map={"submit": "primary"}) }}
 
           </div>

@@ -161,7 +161,7 @@ def logout():
 @app.route("/post/<int:post_id>", methods=["GET", "POST"])
 def show_post(post_id):
     requested_post = BlogPost.query.get(post_id)
-    post_comments = Comment.query.get(post_id)
+    post_comments = db.session.query(Comment).filter_by(post_id=post_id).all()
     print(post_comments)
 
     # TODO - Update the code in post.html to display all the comments associated with the blog post.
@@ -192,7 +192,7 @@ def show_post(post_id):
             flash("Please Login or Register to Comment!")
             return redirect(url_for("login"))
 
-    return render_template("post.html", post=requested_post, form=form)
+    return render_template("post.html", post=requested_post, form=form, comments=post_comments)
 
 
 @app.route("/about")
