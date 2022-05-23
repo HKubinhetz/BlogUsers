@@ -29,42 +29,41 @@ db = SQLAlchemy(app)                                                    # App cr
 
 
 # ----------------------------------- TABLES ----------------------------------
-class Comment(db.Model):
-    # Comment class, represents the comment structure and it`s form of storage in the DB.
-    __tablename__ = "comments"
+class User(UserMixin, db.Model):
+    __tablename__ = "users"
     id = db.Column(db.Integer, primary_key=True)
-    text = db.Column(db.Text, nullable=False)
-    author_id = db.Column(db.Integer, db.ForeignKey('usernames.id'))
-    post_id = db.Column(db.Integer, db.ForeignKey('blog_posts.id'))
+    email = db.Column(db.String(100), unique=True)
+    password = db.Column(db.String(100))
+    name = db.Column(db.String(100))
+    posts = relationship("BlogPost", back_populates="author")
+    comments = relationship("Comment", back_populates="comment_author")
 
 
 class BlogPost(db.Model):
-    # BlogPost class, represents the post structure and it`s form of storage in the DB.
     __tablename__ = "blog_posts"
     id = db.Column(db.Integer, primary_key=True)
-    author = db.Column(db.String(250), nullable=False)
+    author_id = db.Column(db.Integer, db.ForeignKey("users.id"))
+    author = relationship("User", back_populates="posts")
     title = db.Column(db.String(250), unique=True, nullable=False)
     subtitle = db.Column(db.String(250), nullable=False)
     date = db.Column(db.String(250), nullable=False)
     body = db.Column(db.Text, nullable=False)
     img_url = db.Column(db.String(250), nullable=False)
-    parent_id = db.Column(db.Integer, db.ForeignKey('usernames.id'))
-    children_comments = relationship(Comment)
+    comments = relationship("Comment", back_populates="parent_post")
 
 
-class User(db.Model, UserMixin):
-    # User class, represents the users registred to the blog and it's form of storage in the DB.
-    __tablename__ = "usernames"
+class Comment(db.Model):
+    __tablename__ = "comments"
     id = db.Column(db.Integer, primary_key=True)
-    email = db.Column(db.String(250), unique=True, nullable=False)
-    password = db.Column(db.String(250), nullable=False)
-    name = db.Column(db.String(250), nullable=False)
-    children_posts = relationship(BlogPost)
-    children_comments = relationship(Comment)
+    post_id = db.Column(db.Integer, db.ForeignKey("blog_posts.id"))
+    author_id = db.Column(db.Integer, db.ForeignKey("users.id"))
+    parent_post = relationship("BlogPost", back_populates="comments")
+    comment_author = relationship("User", back_populates="comments")
+    text = db.Column(db.Text, nullable=False)
 
 
 # Table Creation, run only once
-# db.create_all()
+db.create_all()
 
 
 # --------------------------------- FUNCTIONS ---------------------------------
@@ -182,8 +181,8 @@ def show_post(post_id):
             print("Top! Vamos salvar esse post!")
             new_comment = Comment(
                 text=comment,
-                author_id=current_user.id,
-                post_id=post_id
+                parent_post=requested_post,
+                comment_author=current_user
             )
             db.session.add(new_comment)
             db.session.commit()
@@ -216,9 +215,9 @@ def add_new_post():
             subtitle=form.subtitle.data,
             body=form.body.data,
             img_url=form.img_url.data,
-            author=current_user.name,
+            author=current_user,
             date=date.today().strftime("%B %d, %Y"),
-            parent_id=current_user.id
+            author_id=current_user.id
         )
         db.session.add(new_post)
         db.session.commit()

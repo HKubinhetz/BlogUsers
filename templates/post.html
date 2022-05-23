@@ -12,7 +12,7 @@
             <h1>{{post.title}}</h1>
             <h2 class="subheading">{{post.subtitle}}</h2>
             <span class="meta">Posted by
-              <a href="#">{{post.author}}</a>
+              <a href="#">{{post.author.name}}</a>
               on {{post.date}}</span>
           </div>
         </div>
@@ -45,13 +45,13 @@
                       <img src="https://wallpaperaccess.com/full/2066123.jpg"/>
                     </div>
                     <div class="commentText">
-                      <p>{{ comment.text }}</p>
+                      <p>{{ comment.text|safe }}</p>
                       <span class="date sub-text">comment author name</span>
                     </div>
                 </li>
               </ul>
-            </div>
             {% endfor %}
+            </div>
 
               {{ wtf.quick_form(form, novalidate=True, button_map={"submit": "primary"}) }}
 
