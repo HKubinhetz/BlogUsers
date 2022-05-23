@@ -183,6 +183,8 @@ def show_post(post_id):
                 author_id=current_user.id,
                 post_id=post_id
             )
+            db.session.add(new_comment)
+            db.session.commit()
             # TODO - Salvar no DB, Redirecionar ao Post de novo
         else:
             print("Precisa Logar")
