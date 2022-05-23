@@ -161,6 +161,8 @@ def logout():
 @app.route("/post/<int:post_id>", methods=["GET", "POST"])
 def show_post(post_id):
     requested_post = BlogPost.query.get(post_id)
+    post_comments = Comment.query.get(post_id)
+    print(post_comments)
 
     # TODO - Update the code in post.html to display all the comments associated with the blog post.
     #  HINT 1: Don't worry about the commenter image just yet.
@@ -185,7 +187,6 @@ def show_post(post_id):
             )
             db.session.add(new_comment)
             db.session.commit()
-            # TODO - Salvar no DB, Redirecionar ao Post de novo
         else:
             print("Precisa Logar")
             flash("Please Login or Register to Comment!")
