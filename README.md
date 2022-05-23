@@ -1,5 +1,5 @@
 # BlogUsers
-A blog project with users!
+A blog project that uses Flask and SQLAlchemy as a means for its main functionalities, such as managing users, posts and comments.
 
 ![image](https://user-images.githubusercontent.com/31540553/169917235-9e1a965c-f0cf-4125-90fc-e219eaded3fb.png)
 
