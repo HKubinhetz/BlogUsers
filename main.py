@@ -11,6 +11,7 @@ from forms import CreatePostForm, UserForm, LoginForm, CommentForm
 from sqlalchemy.exc import IntegrityError
 from functools import wraps
 from flask_gravatar import Gravatar
+import os
 
 
 # -------------------------------- APP CONFIG ---------------------------------
@@ -23,9 +24,9 @@ login_manager.init_app(app)                                             # Initia
 
 
 # ---------------------------------- DATABASE ---------------------------------
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///blog.db'             # SQL Database Path
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False                    # Disabling outdated configs
-db = SQLAlchemy(app)                                                    # App creation
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("BLOGUSERSSQL", "sqlite:///blog.db")  # SQL Database Path
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False                                         # Disabling outdated cfgs
+db = SQLAlchemy(app)                                                                         # App creation
 
 
 # ---------------------------------- GRAVATAR ---------------------------------
